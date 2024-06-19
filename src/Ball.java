@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.util.Random;
 
 /**
- * the class makes a ball and the methods that connected that.
+ * the ball class.
  */
-public class Ball {
+public class Ball implements Sprite {
     private Point center;
     private int radius;
     private java.awt.Color color;
@@ -183,5 +183,19 @@ public class Ball {
             //update the velocity to the new velocity returned by the hit() method
             this.velocity = collisionInfo.collisionObject().hit(collisionPoint, this.velocity);
         }
+    }
+
+    @Override
+    public void timePassed() {
+        this.moveOneStep();
+    }
+
+    /**
+     * Add the ball to the game.
+     *
+     * @param g The game to add the ball to.
+     */
+    public void addToGame(Game g) {
+        g.addSprite(this);
     }
 }

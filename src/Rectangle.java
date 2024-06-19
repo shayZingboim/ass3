@@ -1,3 +1,5 @@
+import biuoop.DrawSurface;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -86,6 +88,12 @@ public class Rectangle {
                 this.getUpperLeft().getX(), this.getUpperLeft().getY(),
                 this.getUpperLeft().getX() + this.getWidth(), this.getUpperLeft().getY()
         );
+    }
+
+    public void drawOn(DrawSurface d) {
+        d.setColor(this.getColor());
+        d.fillRectangle((int) this.getUpperLeft().getX(), (int) this.getUpperLeft().getY(),
+                (int) this.getWidth(), (int) this.getHeight());
     }
 
 

@@ -6,18 +6,20 @@ import java.awt.Color;
 import java.util.Random;
 
 
-public class Block implements Collidable {
+public class Block implements Collidable, Sprite {
     private Rectangle rectangle;
+    private Color boundsColor;
     private Color color;
 
     /**
      * Constructs a Block object with the specified rectangle and color.
      *
      * @param rectangle The rectangle representing the block.
-     * @param color The color of the block.
+     * @param color     The color of the block.
      */
     public Block(Rectangle rectangle, Color color) {
         this.rectangle = rectangle;
+        this.boundsColor = Color.BLACK;
         this.color = color;
     }
 
@@ -51,6 +53,9 @@ public class Block implements Collidable {
         d.setColor(this.rectangle.getColor());
         d.fillRectangle((int) rectangle.getUpperLeft().getX(), (int) rectangle.getUpperLeft().getY(),
                 (int) rectangle.getWidth(), (int) rectangle.getHeight());
+        d.setColor(this.boundsColor);
+        d.drawRectangle((int) rectangle.getUpperLeft().getX(), (int) rectangle.getUpperLeft().getY(),
+                (int) rectangle.getWidth(), (int) rectangle.getHeight());
     }
 
     @Override
@@ -70,5 +75,15 @@ public class Block implements Collidable {
             currentVelocity.setDy(-currentVelocity.getDy());
         }
         return currentVelocity;
+    }
+
+    @Override
+    public void timePassed() {
+        // do nothing
+    }
+
+    public void addToGame(Game game) {
+        game.addCollidable(this);
+        game.addSprite(this);
     }
 }
