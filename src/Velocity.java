@@ -78,6 +78,16 @@ public class Velocity {
         this.dy = dy;
     }
 
+    /**
+     * Maps a speed to a radius.
+     *
+     * @param radius The radius.
+     * @param min The minimum radius.
+     * @param max The maximum radius.
+     * @param speedMin The minimum speed.
+     * @param speedMax The maximum speed.
+     * @return The mapped speed.
+     */
     public static double mapSpeed(double radius, double min, double max, double speedMin, double speedMax) {
         if (radius < min) {
             return speedMax;

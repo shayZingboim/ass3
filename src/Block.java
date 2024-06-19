@@ -14,16 +14,29 @@ public class Block implements Collidable {
      * Constructs a Block object with the specified rectangle and color.
      *
      * @param rectangle The rectangle representing the block.
+     * @param color The color of the block.
      */
     public Block(Rectangle rectangle, Color color) {
         this.rectangle = rectangle;
         this.color = color;
     }
 
+    /**
+     * Constructs a Block object with the specified rectangle and color.
+     *
+     * @param rectangle The rectangle representing the block.
+     */
     public Block(Rectangle rectangle) {
         this(rectangle, Color.BLACK);
     }
 
+    /**
+     * Constructs a Block object with the specified position, width, height, and color.
+     *
+     * @param upperLeft The upper-left corner of the block.
+     * @param width     The width of the block.
+     * @param height    The height of the block.
+     */
     public Block(Point upperLeft, double width, double height) {
         this(new Rectangle(upperLeft, width, height));
     }

@@ -5,113 +5,183 @@ import biuoop.Sleeper;
 import java.awt.Color;
 import java.util.Random;
 
+/**
+ * the class makes a ball and the methods that connected that.
+ */
 public class Ball {
     private Point center;
-    private double radius;
+    private int radius;
     private java.awt.Color color;
     private Velocity velocity;
-    private  final GameEnvironment gameEnvironment;
+    private final GameEnvironment gameEnvironment;
     private static final double THRESHOLD = 0.0001;
 
     // constructors
-    public Ball(Point center, double r, java.awt.Color color, Velocity velocity, GameEnvironment gameEnvironment) {
+
+    /**
+     * Constructs a ball with a given center point, radius, and color.
+     *
+     * @param center          The center point of the ball.
+     * @param r               The radius of the ball.
+     * @param color           The color of the ball.
+     * @param velocity        The velocity of the ball.
+     * @param gameEnvironment The game environment the ball interacts with.
+     */
+    public Ball(Point center, int r, java.awt.Color color, Velocity velocity, GameEnvironment gameEnvironment) {
         this.center = center;
         this.radius = r;
         this.color = color;
         this.velocity = velocity;
         this.gameEnvironment = gameEnvironment;
     }
-    public Ball(Point point, double r, java.awt.Color color, GameEnvironment gameEnvironment) {
+
+    /**
+     * Constructs a ball with given coordinates, radius, color, and game environment.
+     *
+     * @param x               The x-coordinate of the center of the ball.
+     * @param y               The y-coordinate of the center of the ball.
+     * @param r               The radius of the ball.
+     * @param color           The color of the ball.
+     * @param gameEnvironment The game environment the ball interacts with.
+     */
+    public Ball(int x, int y, int r, java.awt.Color color, GameEnvironment gameEnvironment) {
+        this(new Point(x, y), r, color, gameEnvironment);
+    }
+
+    /**
+     * Constructs a ball with given coordinates, radius, color, and game environment.
+     *
+     * @param point           The point of the center of the ball.
+     * @param r               The radius of the ball.
+     * @param color           The color of the ball.
+     * @param gameEnvironment The game environment the ball interacts with.
+     */
+    public Ball(Point point, int r, java.awt.Color color, GameEnvironment gameEnvironment) {
         this(point, r, color, new Velocity(0, 0), gameEnvironment);
     }
 
     // accessors
+
+    /**
+     * Gets the x-coordinate of the center of the ball.
+     *
+     * @return The x-coordinate of the center of the ball.
+     */
     public double getX() {
+        if (this.center == null) {
+            return -1;
+        }
         return this.center.getX();
     }
 
+    /**
+     * Gets the y-coordinate of the center of the ball.
+     *
+     * @return The y-coordinate of the center of the ball.
+     */
     public double getY() {
+        if (this.center == null) {
+            return -1;
+        }
         return this.center.getY();
     }
 
-    public double getSize() {
+    /**
+     * Gets the radius of the ball.
+     *
+     * @return The radius of the ball.
+     */
+    public int getSize() {
         return this.radius;
     }
 
+    /**
+     * Gets the color of the ball.
+     *
+     * @return The color of the ball.
+     */
     public java.awt.Color getColor() {
         return this.color;
     }
 
+    /**
+     * Gets the game environment the ball interacts with.
+     *
+     * @return The game environment the ball interacts with.
+     */
     public Point getCenter() {
         return this.center;
     }
 
+    /**
+     * Gets the game environment the ball interacts with.
+     *
+     * @return The game environment the ball interacts with.
+     */
     public Velocity getVelocity() {
         return this.velocity;
     }
 
-    //get the next point of the ball with the radius
-    public Point getNextPoint() {
-        double sigDx = Math.signum(this.velocity.getDx());
-        double sigDy = Math.signum(this.velocity.getDy());
-        return new Point(this.center.getX() + this.velocity.getDx() + sigDx * this.radius,
-                this.center.getY() + this.velocity.getDy() + sigDy * this.radius);
-    }
-
-
-    // draw the ball on the given DrawSurface
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        surface.fillCircle((int) this.getX(), (int) this.getY(), (int) this.getSize());
+    /**
+     * Gets the game environment the ball interacts with.
+     *
+     * @return The game environment the ball interacts with.
+     */
+    public GameEnvironment getGameEnvironment() {
+        return this.gameEnvironment;
     }
 
     // set the velocity of the ball
+
+    /**
+     * Sets the velocity of the ball.
+     *
+     * @param dx The change in the x-coordinate.
+     * @param dy The change in the y-coordinate.
+     */
     public void setVelocity(double dx, double dy) {
         this.velocity = new Velocity(dx, dy);
     }
 
-    // set the velocity of the ball
+    /**
+     * Sets the velocity of the ball.
+     *
+     * @param v The new velocity of the ball.
+     */
     public void setVelocity(Velocity v) {
         this.velocity = v;
     }
 
-    // move the ball one step
-    //1) compute the ball trajectory (the trajectory is "how the ball will move
-    // without any obstacles" -- its a line starting at current location, and
-    //ending where the velocity will take the ball if no collisions will occur).
-    //2) Check (using the game environment) if moving on this trajectory will
-    //hit anything.
-    //2.1) If no, then move the ball to the end of the trajectory
-    //2.2) Otherwise (there is a hit):
-    //2.2.2) move the ball to "almost" the hit point, but just slightly before
-    //it.
-    //2.2.3) notify the hit object (using its hit() method) that a collision
-    //occurred.
-    //2.2.4) update the velocity to the new velocity returned by the hit()
-    //method.
+
+    /**
+     * draw the ball on the given DrawSurface.
+     *
+     * @param surface the DrawSurface to draw the ball on.
+     */
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.fillCircle((int) this.center.getX(), (int) this.center.getY(), this.radius);
+    }
+
+    /**
+     * move the ball one step.
+     */
     public void moveOneStep() {
-        Point newCenter = this.getVelocity().applyToPoint(this.center);
-        Point nextLocation = this.getNextPoint();
-        // specify line as the movement of the ball from the center
-        Line ballMove = new Line(this.center.getX(), this.center.getY(), nextLocation.getX(), nextLocation.getY());
-        CollisionInfo collisionInfo = this.gameEnvironment.getClosestCollision(ballMove);
-        if (collisionInfo != null) {
+        //the trajectory of the ball
+        Point nextPoint = this.velocity.applyToPoint(this.center);
+        Line trajectory = new Line(this.center, nextPoint);
+        CollisionInfo collisionInfo = this.gameEnvironment.getClosestCollision(trajectory);
+        if (collisionInfo == null) {
+            this.center = nextPoint;
+        } else {
             Point collisionPoint = collisionInfo.collisionPoint();
-            // if from the right
-            if (collisionPoint.getX() >= this.center.getX()) {
-                newCenter.setX(collisionPoint.getX() - THRESHOLD);
-                // from the left
-            } else if (this.center.getX() >= collisionPoint.getX()) {
-                newCenter.setX(collisionPoint.getX() + THRESHOLD);
-            }
-            // from above
-            if (collisionPoint.getY() <= this.center.getY()) {
-                newCenter.setY(collisionPoint.getY() + THRESHOLD);
-            } else if (this.center.getY() <= collisionPoint.getY()) {
-                newCenter.setY(collisionPoint.getY() - THRESHOLD);
-            }
-            this.setVelocity(collisionInfo.collisionObject().hit(collisionPoint, this.getVelocity()));
+            //move the ball to "almost" the hit point
+            double sigXy = Math.signum(this.velocity.getDx());
+            double sigYy = Math.signum(this.velocity.getDy());
+            this.center = new Point(collisionPoint.getX() - this.getSize() * sigXy,
+                    collisionPoint.getY() - this.getSize() * sigYy);
+            //update the velocity to the new velocity returned by the hit() method
+            this.velocity = collisionInfo.collisionObject().hit(collisionPoint, this.velocity);
         }
-        this.center = newCenter;
     }
 }

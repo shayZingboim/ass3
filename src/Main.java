@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Main {
     public static void main(String[] args) {
         Random rnd = new Random();
@@ -15,18 +16,19 @@ public class Main {
         List<Collidable> blocks = new ArrayList<>();
         for (int i = 0; i < rectsAmount; i++) {
             for (int j = 0; j < rectsAmount; j++) {
-                blocks.add(new Block(new Rectangle(new Point(10 + i * 80, 10 + j * 60), 20, 20, java.awt.Color.BLACK)));
+                blocks.add(new Block(new Rectangle(new Point(10 + i * 80, (double) 10 + j * 60), 20, 20, java.awt.Color.BLACK)));
             }
         }
         blocks.add(new Block(new Rectangle(new Point(0, 0), 800, 600, java.awt.Color.BLACK)));
         GameEnvironment ge = new GameEnvironment(blocks);
         Ball[] balls = new Ball[rectsAmount * rectsAmount];
-        for (int i =0; i < rectsAmount;i++) {
-            for (int j = 0; j< rectsAmount; j++) {
-                balls[j + i * rectsAmount] = new Ball(new Point(500, 500), 5, java.awt.Color.RED, ge);
-                balls[j + i * rectsAmount].setVelocity(Velocity.fromAngleAndSpeed(rnd.nextInt(0,360),5));
+        for (int i = 0; i < rectsAmount; i++) {
+            for (int j = 0; j < rectsAmount; j++) {
+                balls[j + i * rectsAmount] = new Ball(500, 500, 5, java.awt.Color.RED, ge);
+                balls[j + i * rectsAmount].setVelocity(Velocity.fromAngleAndSpeed(rnd.nextInt(0, 360), 5));
             }
         }
+
         while (true) {
             Sleeper sleeper = new Sleeper();
             sleeper.sleepFor(20);
@@ -39,8 +41,8 @@ public class Main {
                             (int) blocks.get(j + i * rectsAmount).getCollisionRectangle().getWidth(),
                             (int) blocks.get(j + i * rectsAmount).getCollisionRectangle().getHeight());
                     d.setColor(Color.red);
-                    d.fillCircle((int) balls[j+i*rectsAmount].getCenter().getX(), (int) balls[j+i*rectsAmount].getCenter().getY(), (int)balls[j+i*rectsAmount].getSize());
-                    balls[j+i*rectsAmount].moveOneStep();
+                    d.fillCircle((int) balls[j + i * rectsAmount].getX(), (int) balls[j + i * rectsAmount].getY(), balls[j + i * rectsAmount].getSize());
+                    balls[j + i * rectsAmount].moveOneStep();
                 }
             }
             gui.show(d);
