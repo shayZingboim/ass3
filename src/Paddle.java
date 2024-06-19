@@ -1,19 +1,48 @@
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 
+/**
+ * Represents a paddle in the game.
+ */
 public class Paddle implements Sprite, Collidable {
     private biuoop.KeyboardSensor keyboard;
     private Block paddleBlock;
 
+    /**
+     * Constructs a new Paddle.
+     *
+     * @param keyboard the keyboard sensor used to control the paddle.
+     * @param block    the block representing the paddle.
+     */
     public Paddle(biuoop.KeyboardSensor keyboard, Block block) {
         this.keyboard = keyboard;
         this.paddleBlock = block;
     }
 
+    /**
+     * Moves the paddle to the left.
+     */
     public void moveLeft() {
+        double newX = this.paddleBlock.getCollisionRectangle().getUpperLeft().getX() - 5;
+        if (newX < 25 - this.paddleBlock.getCollisionRectangle().getWidth()) {
+            newX = 800 - this.paddleBlock.getCollisionRectangle().getWidth();
+        }
+        this.paddleBlock = new Block(new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
+                this.paddleBlock.getCollisionRectangle().getWidth(),
+                this.paddleBlock.getCollisionRectangle().getHeight());
     }
 
+    /**
+     * Moves the paddle to the right.
+     */
     public void moveRight() {
+        double newX = this.paddleBlock.getCollisionRectangle().getUpperLeft().getX() + 5;
+        if (newX > 800 - this.paddleBlock.getCollisionRectangle().getWidth()) {
+            newX = 25;
+        }
+        this.paddleBlock = new Block(new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
+                this.paddleBlock.getCollisionRectangle().getWidth(),
+                this.paddleBlock.getCollisionRectangle().getHeight());
     }
 
     @Override
@@ -50,6 +79,7 @@ public class Paddle implements Sprite, Collidable {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+        return null;
     }
 
     // Add this paddle to the game.

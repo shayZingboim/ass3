@@ -141,4 +141,13 @@ public class Rectangle {
     public Line[] getLinesArr() {
         return this.lines;
     }
+
+    /**
+     * Set the upper left point of the rectangle.
+     *
+     * @param point the new upper left point of the rectangle
+     */
+    public void setUpperLeft(Point point) {
+        this.upperLeft = point;
+    }
 }
