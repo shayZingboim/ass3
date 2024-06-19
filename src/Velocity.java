@@ -60,6 +60,24 @@ public class Velocity {
         return dy;
     }
 
+    /**
+     * Sets the change in the x-coordinate.
+     *
+     * @param dx The new change in the x-coordinate.
+     */
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    /**
+     * Sets the change in the y-coordinate.
+     *
+     * @param dy The new change in the y-coordinate.
+     */
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
     public static double mapSpeed(double radius, double min, double max, double speedMin, double speedMax) {
         if (radius < min) {
             return speedMax;

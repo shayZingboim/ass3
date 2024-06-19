@@ -1,47 +1,61 @@
+import java.awt.*;
+import java.util.ArrayList;
+
 public class Rectangle {
     private Point upperLeft;
     private double width;
     private double height;
+    private Color color;
+    private Line[] lines;
 
-    // Create a new rectangle with location and width/height.
-    public Rectangle(Point upperLeft, double width, double height) {
+    // constructors
+    public Rectangle(Point upperLeft, double width, double height, Color color) {
         this.upperLeft = upperLeft;
         this.width = width;
         this.height = height;
+        this.color = color;
+        recToLines();
     }
+
+    public Rectangle(Point upperLeft, double width, double height) {
+        this(upperLeft, width, height, Color.BLACK);
+    }
+
+    public Rectangle(double x, double y, double width, double height) {
+        this(new Point(x, y), width, height);
+    }
+
 
     // Return a (possibly empty) List of intersection points
     // with the specified line.
     public java.util.List<Point> intersectionPoints(Line line) {
-        java.util.List<Point> intersectionPoints = new java.util.ArrayList<Point>();
-
-        // Create the rectangle's lines
-        Line upperLine = new Line(upperLeft, new Point(upperLeft.getX() + width, upperLeft.getY()));
-        Line lowerLine = new Line(new Point(upperLeft.getX(), upperLeft.getY() + height),
-                new Point(upperLeft.getX() + width, upperLeft.getY() + height));
-        Line leftLine = new Line(upperLeft, new Point(upperLeft.getX(), upperLeft.getY() + height));
-        Line rightLine = new Line(new Point(upperLeft.getX() + width, upperLeft.getY()),
-                new Point(upperLeft.getX() + width, upperLeft.getY() + height));
-
-        // Add the intersection points with the rectangle's lines
-
-        // Add the intersection points with the upper line
-        if (line.isIntersecting(upperLine)) {
-            intersectionPoints.add(line.intersectionWith(upperLine));
-        }
-        // Add the intersection points with the lower line
-        if (line.isIntersecting(lowerLine)) {
-            intersectionPoints.add(line.intersectionWith(lowerLine));
-        }
-        // Add the intersection points with the left line
-        if (line.isIntersecting(leftLine)) {
-            intersectionPoints.add(line.intersectionWith(leftLine));
-        }
-        // Add the intersection points with the right line
-        if (line.isIntersecting(rightLine)) {
-            intersectionPoints.add(line.intersectionWith(rightLine));
+        ArrayList<Point> intersectionPoints = new ArrayList<Point>();
+        for (int i = 0; i < lines.length; i++) {
+            if (line.intersectionWith(lines[i]) != null) {
+                intersectionPoints.add(line.intersectionWith(lines[i]));
+            }
         }
         return intersectionPoints;
+    }
+
+    public void recToLines() {
+        this.lines = new Line[4];
+        lines[0] = new Line(
+                this.getUpperLeft().getX(), this.getUpperLeft().getY(),
+                this.getUpperLeft().getX(), this.getUpperLeft().getY() + this.getHeight()
+        );
+        lines[1] = new Line(
+                this.getUpperLeft().getX(), this.getUpperLeft().getY() + this.getHeight(),
+                this.getUpperLeft().getX() + this.getWidth(), this.getUpperLeft().getY() + this.getHeight()
+        );
+        lines[2] = new Line(
+                this.getUpperLeft().getX() + this.getWidth(), this.getUpperLeft().getY() + this.getHeight(),
+                this.getUpperLeft().getX() + this.getWidth(), this.getUpperLeft().getY()
+        );
+        lines[3] = new Line(
+                this.getUpperLeft().getX(), this.getUpperLeft().getY(),
+                this.getUpperLeft().getX() + this.getWidth(), this.getUpperLeft().getY()
+        );
     }
 
 
@@ -57,5 +71,14 @@ public class Rectangle {
     // Returns the upper-left point of the rectangle.
     public Point getUpperLeft() {
         return upperLeft;
+    }
+
+    // Returns the color of the rectangle.
+    public Color getColor() {
+        return color;
+    }
+
+    public Line[] getLinesArr() {
+        return this.lines;
     }
 }

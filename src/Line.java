@@ -305,16 +305,97 @@ public class Line {
     // Otherwise, return the closest intersection point to the
     // start of the line.
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
-        java.util.List<Point> intersectionPoints = rect.intersectionPoints(this);
-        if (intersectionPoints.isEmpty()) {
-            return null;
-        }
-        Point closestPoint = intersectionPoints.get(0);
-        for (Point point : intersectionPoints) {
-            if (this.start.distance(point) < this.start.distance(closestPoint)) {
-                closestPoint = point;
+        Line[] lines = rect.getLinesArr();
+        Point closestIntersection = null;
+        // start is based on lower x
+        double minDistance = Double.MAX_VALUE;
+        for (Line line : lines) {
+            Point intersection = this.intersectionWith(line);
+            if (intersection != null) {
+                double distance = this.start.distance(intersection);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestIntersection = intersection;
+                }
             }
         }
-        return closestPoint;
+        return closestIntersection;
     }
+
+    /**
+     * Checks if the x-coordinate of a point is within the segment of the line.
+     *
+     * @param pt The point to check.
+     * @return true if the x-coordinate is within the segment, false otherwise.
+     */
+    public boolean isPointXInSegment(Point pt) {
+        double maxX = Math.max(this.start.getX(), this.end.getX());
+        double minX = Math.min(this.start.getX(), this.end.getX());
+        return (pt.getX() > minX || Math.abs(pt.getX() - minX) < EPSILON)
+                && (pt.getX() < maxX || Math.abs(pt.getX() - maxX) < EPSILON);
+    }
+
+    /**
+     * Checks if the y-coordinate of a point is within the segment of the line.
+     *
+     * @param pt The point to check.
+     * @return true if the y-coordinate is within the segment, false otherwise.
+     */
+    public boolean isPointYInSegment(Point pt) {
+        double maxY = Math.max(this.start.getY(), this.end.getY());
+        double minY = Math.min(this.start.getY(), this.end.getY());
+        return (pt.getY() > minY || Math.abs(pt.getY() - minY) < EPSILON)
+                && (pt.getY() < maxY || Math.abs(pt.getY() - maxY) < EPSILON);
+    }
+
+    /**
+     * Checks if a point lies on the line segment.
+     *
+     * @param pt The point to check.
+     * @return true if the point lies on the line segment, false otherwise.
+     */
+    public boolean isPointInRange(Point pt) {
+        return this.isPointXInSegment(pt) && this.isPointYInSegment(pt);
+    }
+
+    /**
+     * Checks if the line segment is parallel to the y-axis.
+     *
+     * @return true if the line segment is parallel to the y-axis, false otherwise.
+     */
+    public boolean isLineParallelToY() {
+        return Math.abs(this.end.getX() - this.start.getX()) < EPSILON;
+    }
+
+    /**
+     * Checks if the line segment is parallel to the x-axis.
+     *
+     * @return true if the line segment is parallel to the x-axis, false otherwise.
+     */
+    public boolean isLineParallelToX() {
+        return Math.abs(this.end.getY() - this.start.getY()) < EPSILON;
+    }
+
+    /**
+     * Checks if a point lies on the line.
+     *
+     * @param pt   The point to check.
+     * @param line The line to check against.
+     * @return true if the point lies on the line, false otherwise.
+     */
+    public boolean isPointOnLine(Point pt, Line line) {
+        if (line.isLineParallelToY()) {
+            return Math.abs(pt.getX() - line.start.getX()) < EPSILON
+                    && line.isPointYInSegment(pt);
+        }
+        if (line.isLineParallelToX()) {
+            return Math.abs(pt.getY() - line.start.getY()) < EPSILON
+                    && line.isPointXInSegment(pt);
+        }
+        double slope = getSlope(line);
+        double b = getB(line, slope);
+        return Math.abs(pt.getY() - (slope * pt.getX() + b)) < EPSILON
+                && line.isPointInRange(pt);
+    }
+
 }

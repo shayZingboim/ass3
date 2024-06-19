@@ -8,6 +8,9 @@ public class GameEnvironment {
     public GameEnvironment() {
         this.collidables = new ArrayList<Collidable>();
     }
+    public GameEnvironment(List<Collidable> collidables) {
+        this.collidables = collidables;
+    }
 
     // add the given collidable to the environment.
     public void addCollidable(Collidable c) {
