@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 /**
  * Represents a line segment defined by two points.
  */
@@ -301,14 +303,19 @@ public class Line {
                 || (this.start.equals(other.end) && this.end.equals(other.start)));
     }
 
-    // If this line does not intersect with the rectangle, return null.
-    // Otherwise, return the closest intersection point to the
-    // start of the line.
+    /**
+     * Returns the closest intersection point to the start of the line with a given rectangle.
+     *
+     * @param rect The rectangle to check for intersection.
+     * @return The closest intersection point to the start of the line, or null if there is no intersection.
+     */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
+        // Get the lines of the rectangle
         Line[] lines = rect.getLinesArr();
         Point closestIntersection = null;
         // start is based on lower x
         double minDistance = Double.MAX_VALUE;
+        // Find the closest intersection point to the start of the line
         for (Line line : lines) {
             Point intersection = this.intersectionWith(line);
             if (intersection != null) {
@@ -384,16 +391,19 @@ public class Line {
      * @return true if the point lies on the line, false otherwise.
      */
     public boolean isPointOnLine(Point pt, Line line) {
+        // Check if the line is parallel to the y-axis
         if (line.isLineParallelToY()) {
             return Math.abs(pt.getX() - line.start.getX()) < EPSILON
                     && line.isPointYInSegment(pt);
         }
+        // Check if the line is parallel to the x-axis
         if (line.isLineParallelToX()) {
             return Math.abs(pt.getY() - line.start.getY()) < EPSILON
                     && line.isPointXInSegment(pt);
         }
         double slope = getSlope(line);
         double b = getB(line, slope);
+        // Check if the point lies on the line
         return Math.abs(pt.getY() - (slope * pt.getX() + b)) < EPSILON
                 && line.isPointInRange(pt);
     }

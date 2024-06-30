@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
 import java.util.ArrayList;
 import java.util.List;

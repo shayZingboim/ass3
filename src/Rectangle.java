@@ -1,13 +1,18 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 
+/**
+ * A class representing a rectangle.
+ */
 public class Rectangle {
     private Point upperLeft;
-    private double width;
-    private double height;
-    private Color color;
+    private final double width;
+    private final double height;
+    private final Color color;
     private Line[] lines;
 
     // constructors
@@ -58,10 +63,13 @@ public class Rectangle {
      * @return a list of the intersection points
      */
     public java.util.List<Point> intersectionPoints(Line line) {
+        // create a list of the intersection points
         ArrayList<Point> intersectionPoints = new ArrayList<Point>();
-        for (int i = 0; i < lines.length; i++) {
-            if (line.intersectionWith(lines[i]) != null) {
-                intersectionPoints.add(line.intersectionWith(lines[i]));
+        // check intersection with each line of the rectangle
+        for (Line value : lines) {
+            // if there is an intersection, add it to the list
+            if (line.intersectionWith(value) != null) {
+                intersectionPoints.add(line.intersectionWith(value));
             }
         }
         return intersectionPoints;
@@ -71,7 +79,9 @@ public class Rectangle {
      * Convert the rectangle to lines array.
      */
     public void recToLines() {
+        // create an array of the lines of the rectangle
         this.lines = new Line[4];
+        // create the lines
         lines[0] = new Line(
                 this.getUpperLeft().getX(), this.getUpperLeft().getY(),
                 this.getUpperLeft().getX(), this.getUpperLeft().getY() + this.getHeight()
@@ -90,6 +100,11 @@ public class Rectangle {
         );
     }
 
+    /**
+     * Draw the rectangle on a given surface.
+     *
+     * @param d the surface to draw the rectangle on
+     */
     public void drawOn(DrawSurface d) {
         d.setColor(this.getColor());
         d.fillRectangle((int) this.getUpperLeft().getX(), (int) this.getUpperLeft().getY(),

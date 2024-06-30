@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 /**
  * Represents the velocity of an object, defined by its change in position (dx, dy).
  */
@@ -17,17 +19,16 @@ public class Velocity {
     }
 
     /**
-     * Creates a Velocity object from an angle and a speed.
+     * Constructs a Velocity object from an angle and speed.
      *
-     * @param angle The angle in degrees.
-     * @param speed The speed.
-     * @return A Velocity object representing the given angle and speed.
+     * @param angle The angle of the velocity.
+     * @param speed The speed of the velocity.
+     * @return A new Velocity object.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
-        // Calculate dx and dy from the angle and speed
-        double dx = speed * Math.cos(Math.toRadians(angle));
-        // Negative because in most graphics systems, y increases downward
-        double dy = -(speed * Math.sin(Math.toRadians(angle)));
+        double radian = Math.toRadians(angle) - (Math.PI / 2);
+        double dx = Math.cos(radian) * speed;
+        double dy = Math.sin(radian) * speed;
         return new Velocity(dx, dy);
     }
 

@@ -1,11 +1,17 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
+
+import java.awt.Color;
+
 
 /**
  * Represents a paddle in the game.
  */
 public class Paddle implements Sprite, Collidable {
-    private biuoop.KeyboardSensor keyboard;
+    private final biuoop.KeyboardSensor keyboard;
+    private final Color color;
     private Block paddleBlock;
 
     /**
@@ -17,32 +23,43 @@ public class Paddle implements Sprite, Collidable {
     public Paddle(biuoop.KeyboardSensor keyboard, Block block) {
         this.keyboard = keyboard;
         this.paddleBlock = block;
+        this.color = block.getCollisionRectangle().getColor();
     }
 
     /**
      * Moves the paddle to the left.
      */
     public void moveLeft() {
+        // Move the paddle 5 pixels to the left
         double newX = this.paddleBlock.getCollisionRectangle().getUpperLeft().getX() - 5;
+        // If the paddle is at the left edge of the screen, move it to the right edge
         if (newX < 25 - this.paddleBlock.getCollisionRectangle().getWidth()) {
             newX = 800 - this.paddleBlock.getCollisionRectangle().getWidth();
         }
-        this.paddleBlock = new Block(new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
-                this.paddleBlock.getCollisionRectangle().getWidth(),
-                this.paddleBlock.getCollisionRectangle().getHeight());
+        // Create a new paddle block with the new x coordinate
+        this.paddleBlock = new Block(
+                new Rectangle(
+                        new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
+                        this.paddleBlock.getCollisionRectangle().getWidth(),
+                        this.paddleBlock.getCollisionRectangle().getHeight()), this.color);
     }
 
     /**
      * Moves the paddle to the right.
      */
     public void moveRight() {
+        // Move the paddle 5 pixels to the right
         double newX = this.paddleBlock.getCollisionRectangle().getUpperLeft().getX() + 5;
+        // If the paddle is at the right edge of the screen, move it to the left edge
         if (newX > 800 - this.paddleBlock.getCollisionRectangle().getWidth()) {
             newX = 25;
         }
-        this.paddleBlock = new Block(new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
-                this.paddleBlock.getCollisionRectangle().getWidth(),
-                this.paddleBlock.getCollisionRectangle().getHeight());
+        // Create a new paddle block with the new x coordinate
+        this.paddleBlock = new Block(
+                new Rectangle(
+                        new Point(newX, this.paddleBlock.getCollisionRectangle().getUpperLeft().getY()),
+                        this.paddleBlock.getCollisionRectangle().getWidth(),
+                        this.paddleBlock.getCollisionRectangle().getHeight()), this.color);
     }
 
     @Override
@@ -57,7 +74,7 @@ public class Paddle implements Sprite, Collidable {
 
     @Override
     public void drawOn(DrawSurface d) {
-        d.setColor(this.paddleBlock.getCollisionRectangle().getColor());
+        d.setColor(this.color);
         d.fillRectangle((int) this.paddleBlock.getCollisionRectangle().getUpperLeft().getX(),
                 (int) this.paddleBlock.getCollisionRectangle().getUpperLeft().getY(),
                 (int) this.paddleBlock.getCollisionRectangle().getWidth(),
@@ -79,9 +96,11 @@ public class Paddle implements Sprite, Collidable {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+        // Calculate the new velocity based on the collision point
         int areaIndex = findArea(this.paddleBlock.getCollisionRectangle().getUpperLeft().getX(),
                 this.paddleBlock.getCollisionRectangle().getWidth(), collisionPoint.getX());
         double currentSpeed = currentVelocity.getSpeed();
+        // Change the velocity based on the area of the paddle that the collision occurred in
         switch (areaIndex) {
             case 1:
                 currentVelocity = Velocity.fromAngleAndSpeed(300, currentSpeed);
@@ -104,9 +123,18 @@ public class Paddle implements Sprite, Collidable {
         return currentVelocity;
     }
 
-    //return the part of the paddle that the ball hit
+    /**
+     * Finds the area of the paddle that the collision occurred in.
+     *
+     * @param x          the x coordinate of the paddle.
+     * @param width      the width of the paddle.
+     * @param collisionX the x coordinate of the collision.
+     * @return the area of the paddle that the collision occurred in.
+     */
     public int findArea(double x, double width, double collisionX) {
+        // Divide the paddle into 5 regions
         double regionWidth = width / 5;
+        // Check which region the collision occurred in
         for (int i = 0; i < 5; i++) {
             double regionStart = x + i * regionWidth;
             double regionEnd = x + (i + 1) * regionWidth;

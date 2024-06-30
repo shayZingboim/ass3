@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
 
 /**

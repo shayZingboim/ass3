@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 /**
  * This class represents a point in a 2D coordinate system.
  */
@@ -56,9 +58,20 @@ public class Point {
         return this.y;
     }
 
+    /**
+     * Sets the x-coordinate of this point.
+     *
+     * @param x The new x-coordinate of this point.
+     */
     public void setX(double x) {
         this.x = x;
     }
+
+    /**
+     * Sets the y-coordinate of this point.
+     *
+     * @param y The new y-coordinate of this point.
+     */
     public void setY(double y) {
         this.y = y;
     }

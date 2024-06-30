@@ -1,3 +1,5 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -49,13 +51,13 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         // create and add a paddle to the game
         Paddle paddle = new Paddle(this.gui.getKeyboardSensor(),
-                new Block(new Rectangle(new Point(400, 570), 100, 5, Color.YELLOW)));
+                new Block(new Rectangle(new Point(400, 550), 100, 20, Color.YELLOW)));
         paddle.addToGame(this);
         // create and add two balls to the game
         Ball[] balls = new Ball[2];
         for (int i = 0; i < balls.length; i++) {
             balls[i] = new Ball(new Point(700 + i * 10, 100), 6, Color.MAGENTA, this.environment);
-            balls[i].setVelocity(5 + 2 * i, 6 + 2 * i);
+            balls[i].setVelocity(4 + i, 4 + i);
             balls[i].addToGame(this);
         }
         // create and add bounds blocks to the game

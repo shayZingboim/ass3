@@ -1,14 +1,15 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
-import biuoop.GUI;
-import biuoop.Sleeper;
-
 import java.awt.Color;
-import java.util.Random;
 
 
+/**
+ * A Block class.
+ */
 public class Block implements Collidable, Sprite {
-    private Rectangle rectangle;
-    private Color boundsColor;
+    private final Rectangle rectangle;
+    private final Color boundsColor;
     private Color color;
 
     /**
@@ -65,6 +66,7 @@ public class Block implements Collidable, Sprite {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+        //get the lines of the rectangle
         Line[] lines = rectangle.getLinesArr();
         //lines parallel to Y
         if (lines[0].isPointOnLine(collisionPoint, lines[0]) || lines[2].isPointOnLine(collisionPoint, lines[2])) {
@@ -87,6 +89,11 @@ public class Block implements Collidable, Sprite {
         // do nothing
     }
 
+    /**
+     * Adds the block to the game.
+     *
+     * @param game The game to add the block to.
+     */
     public void addToGame(Game game) {
         game.addCollidable(this);
         game.addSprite(this);

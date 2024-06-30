@@ -1,22 +1,18 @@
+//Shay Zingboim 208497255, Yair Kupershtock 322889015
+
 import biuoop.DrawSurface;
-import biuoop.GUI;
-import biuoop.Sleeper;
 
 import java.awt.Color;
-import java.util.Random;
 
 /**
  * the ball class.
  */
 public class Ball implements Sprite {
     private Point center;
-    private int radius;
-    private java.awt.Color color;
+    private final int radius;
+    private final Color color;
     private Velocity velocity;
     private final GameEnvironment gameEnvironment;
-    private static final double THRESHOLD = 0.0001;
-
-    // constructors
 
     /**
      * Constructs a ball with a given center point, radius, and color.
@@ -206,5 +202,5 @@ public class Ball implements Sprite {
      */
     public void addToGame(Game g) {
         g.addSprite(this);
-        }
+    }
 }
