@@ -43,6 +43,15 @@ public class Velocity {
     }
 
     /**
+     * Gets the speed of the velocity.
+     *
+     * @return the speed of the velocity.
+     */
+    public double getSpeed() {
+        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)); // Calculating speed using Pitagoras formula
+    }
+
+    /**
      * Returns the change in the x-coordinate.
      *
      * @return The change in the x-coordinate.

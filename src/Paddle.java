@@ -79,12 +79,54 @@ public class Paddle implements Sprite, Collidable {
 
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        return null;
+        int areaIndex = findArea(this.paddleBlock.getCollisionRectangle().getUpperLeft().getX(),
+                this.paddleBlock.getCollisionRectangle().getWidth(), collisionPoint.getX());
+        double currentSpeed = currentVelocity.getSpeed();
+        switch (areaIndex) {
+            case 1:
+                currentVelocity = Velocity.fromAngleAndSpeed(300, currentSpeed);
+                break;
+            case 2:
+                currentVelocity = Velocity.fromAngleAndSpeed(330, currentSpeed);
+                break;
+            case 3:
+                currentVelocity = new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+                break;
+            case 4:
+                currentVelocity = Velocity.fromAngleAndSpeed(30, currentSpeed);
+                break;
+            case 5:
+                currentVelocity = Velocity.fromAngleAndSpeed(60, currentSpeed);
+                break;
+            default:
+                break;
+        }
+        return currentVelocity;
     }
 
-    // Add this paddle to the game.
+    //return the part of the paddle that the ball hit
+    public int findArea(double x, double width, double collisionX) {
+        double regionWidth = width / 5;
+        for (int i = 0; i < 5; i++) {
+            if (collisionX >= x + i * regionWidth && collisionX <= x + (i + 1) * regionWidth) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Adds the paddle to the game.
+     *
+     * @param g the game to add the paddle to.
+     */
     public void addToGame(Game g) {
         g.addSprite(this);
         g.addCollidable(this);
+    }
+
+    @Override
+    public Boolean isPaddle() {
+        return true;
     }
 }

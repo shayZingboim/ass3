@@ -78,6 +78,11 @@ public class Block implements Collidable, Sprite {
     }
 
     @Override
+    public Boolean isPaddle() {
+        return false;
+    }
+
+    @Override
     public void timePassed() {
         // do nothing
     }

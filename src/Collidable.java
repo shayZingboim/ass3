@@ -20,4 +20,11 @@ public interface Collidable {
      * @return The new velocity of the object that collided with the collidable object.
      */
     Velocity hit(Point collisionPoint, Velocity currentVelocity);
+
+    /**
+     * Returns if the object is a paddle object.
+     *
+     * @return true if the object is a paddle object, false otherwise.
+     */
+    Boolean isPaddle();
 }

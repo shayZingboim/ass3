@@ -49,7 +49,7 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         // create and add a paddle to the game
         Paddle paddle = new Paddle(this.gui.getKeyboardSensor(),
-                new Block(new Rectangle(new Point(400, 550), 100, 20, Color.YELLOW)));
+                new Block(new Rectangle(new Point(400, 570), 100, 5, Color.YELLOW)));
         paddle.addToGame(this);
         // create and add two balls to the game
         Ball[] balls = new Ball[2];
