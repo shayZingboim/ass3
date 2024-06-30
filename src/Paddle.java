@@ -108,11 +108,13 @@ public class Paddle implements Sprite, Collidable {
     public int findArea(double x, double width, double collisionX) {
         double regionWidth = width / 5;
         for (int i = 0; i < 5; i++) {
-            if (collisionX >= x + i * regionWidth && collisionX <= x + (i + 1) * regionWidth) {
+            double regionStart = x + i * regionWidth;
+            double regionEnd = x + (i + 1) * regionWidth;
+            if (collisionX >= regionStart && collisionX <= regionEnd) {
                 return i + 1;
             }
         }
-        return 0;
+        return -1;
     }
 
     /**

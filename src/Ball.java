@@ -171,17 +171,26 @@ public class Ball implements Sprite {
         Point nextPoint = this.velocity.applyToPoint(this.center);
         Line trajectory = new Line(this.center, nextPoint);
         CollisionInfo collisionInfo = this.gameEnvironment.getClosestCollision(trajectory);
-        if (collisionInfo == null) {
-            this.center = nextPoint;
-        } else {
+        if (collisionInfo != null) {
             Point collisionPoint = collisionInfo.collisionPoint();
             //move the ball to "almost" the hit point
             double sigXy = Math.signum(this.velocity.getDx());
             double sigYy = Math.signum(this.velocity.getDy());
-            this.center = new Point(collisionPoint.getX() - this.getSize() * sigXy,
-                    collisionPoint.getY() - this.getSize() * sigYy);
+            this.center.setX(collisionPoint.getX() - this.radius * sigXy);
+            this.center.setY(collisionPoint.getY() - this.radius * sigYy);
             //update the velocity to the new velocity returned by the hit() method
             this.velocity = collisionInfo.collisionObject().hit(collisionPoint, this.velocity);
+            //check if the ball enters the paddle
+            if (collisionInfo.collisionObject().isPaddle()) {
+                //if the ball enters the paddle, we need to move it to the edge of the paddle
+                //to avoid the ball from getting stuck in the paddle
+                this.center.setX(this.center.getX());
+                this.center.setY(this.gameEnvironment.getCollidablesList().get(0).getCollisionRectangle().getHeight()
+                        - collisionInfo.collisionObject().getCollisionRectangle().getHeight() - this.radius - 35);
+            }
+        } else {
+            //if there is no collision, move the ball to the next point
+            this.center = this.velocity.applyToPoint(this.center);
         }
     }
 
